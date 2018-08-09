@@ -1,5 +1,6 @@
 # ashikasoft-filestore
-Bare-bones kv file store for prototypes or small projects in Clojure
+Bare-bones map file store for prototypes or small projects in Clojure.
+This stores a map in edn files for easy retrieval/manipulation.
 
 # Usage
 Give the filestore a path and a name:
@@ -14,6 +15,7 @@ Data is held in an atom, so use swap! for CRUD operations.
     (swap! (fs/data my-table) assoc :my-key 17 :another-key 42)
     ;; view the table
     (fs/view my-table)
+    ;; {:my-key 17, :another-key 42}
 
 Clojure's swap takes care of atomic operations. For example, update and delete in one go:
 
@@ -22,6 +24,7 @@ Clojure's swap takes care of atomic operations. For example, update and delete i
            (comp #(update % :my-key inc) #(dissoc % :another-key)))
     ;; view it again
     (fs/view my-table)
+    ;; {:my-key 18}
 
 Write to disk.
 
