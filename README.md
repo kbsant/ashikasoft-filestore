@@ -1,4 +1,7 @@
 # ashikasoft-filestore
+
+[![Clojars Project](https://img.shields.io/clojars/v/ashikasoft/filestore.svg)](https://clojars.org/ashikasoft/filestore)
+
 Bare-bones map file store for prototypes or small projects in Clojure.
 This stores a map in edn files for easy retrieval/manipulation.
 
