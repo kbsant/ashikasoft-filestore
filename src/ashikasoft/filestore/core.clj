@@ -8,6 +8,9 @@
 ;; Does not include queuing or caching.
 
 (defn init-store!
+  "Initialize a store with data from the directory.
+   If the directory is missing, it will be created and initialized
+   with the given init-data, or an empty map if init-data is omitted."
   ([base-dir name]
    (init-store! base-dir name {}))
   ([base-dir name init-data]
@@ -16,12 +19,18 @@
      {:loc-info loc-info
       :data (atom (or data init-data))})))
     
-(defn write-store! [{:keys [loc-info data] :as store}]
+(defn write-store!
+  "Write the store data to a file."
+  [{:keys [loc-info data] :as store}]
   (impl/write-file! loc-info @data))
 
-(defn data [store]
+(defn data
+  "Return the atom containing the store data."
+  [store]
   (:data store))
 
-(defn view [store]
+(defn view
+  "View the store data."
+  [store]
   (some-> store :data deref))
 

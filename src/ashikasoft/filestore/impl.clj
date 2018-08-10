@@ -8,6 +8,7 @@
 (defn join-path [& elements]
   (clojure.string/join java.io.File/separator elements))
 
+;; FIXME filter out non-numerical filenames or names exceeding 8 digits
 (defn last-childname
   "Get the current max name in the base directory"
   [base-dir]
@@ -33,7 +34,7 @@
     (format-name 1)))
 
 (defn init-loc!
-  "Make base dir and return immutable info about the store (base dir and table name)" 
+  "Make base dir and return immutable info about the store location."
   [base-dir name]
   (let [path (join-path base-dir name)]
     (-> (io/file path) .mkdirs)
