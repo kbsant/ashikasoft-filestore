@@ -7,19 +7,21 @@
 ;; Bare-bones edn file store, meant for prototypes or small projects.
 ;; Does not include queuing or caching.
 
-(defn init-table! [base-dir table-name]
-  (let [store (impl/init-store! base-dir table-name)
-        data (impl/read-store store)]
-    {:store-info store
-     :data (atom (or data {}))}))
+(defn init-store!
+  ([base-dir name]
+   (init-store! base-dir name {}))
+  ([base-dir name init-data]
+   (let [loc-info (impl/init-loc! base-dir name)
+         data (impl/read-file loc-info)]
+     {:loc-info loc-info
+      :data (atom (or data init-data))})))
     
-(defn write-table! [table]
-  (let [{:keys [store-info data]} table]
-    (impl/write-store! store-info @data)))
+(defn write-store! [{:keys [loc-info data] :as store}]
+  (impl/write-file! loc-info @data))
 
-(defn data [table]
-  (:data table))
+(defn data [store]
+  (:data store))
 
-(defn view [table]
-  (some-> table :data deref))
+(defn view [store]
+  (some-> store :data deref))
 

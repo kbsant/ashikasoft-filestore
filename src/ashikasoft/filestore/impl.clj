@@ -21,9 +21,6 @@
 
 (defn parse-name [name] (Integer/parseInt name))
 
-(defn assoc-unique [m k v]
- (if-not (contains? m k) (assoc m k v) m)) 
-
 ;; FIXME this isnt thread safe -- after the prototype, move to a db
 (defn next-childname
   "Generate the next name after the max name in the base directory, or a new name"
@@ -35,26 +32,25 @@
       (format-name))
     (format-name 1)))
 
-(defn init-store!
+(defn init-loc!
   "Make base dir and return immutable info about the store (base dir and table name)" 
-  [base-dir table]
-  (let [table-base (join-path base-dir table)] 
-    (-> (io/file table-base) .mkdirs) 
+  [base-dir name]
+  (let [path (join-path base-dir name)]
+    (-> (io/file path) .mkdirs)
     {:base-dir base-dir
-     :table table
-     :table-base table-base}))
+     :name name
+     :path path}))
 
-(defn child-path [store child-fn]
-  (let [table-base (:table-base store)
-        child-name (child-fn table-base)]
+(defn child-path [{path :path :as loc-info} child-fn]
+  (let [child-name (child-fn path)]
     (when child-name
-      (join-path table-base child-name))))
+      (join-path path child-name))))
 
-(defn last-child-path [store]
-  (child-path store last-childname))
+(defn last-child-path [loc-info]
+  (child-path loc-info last-childname))
 
-(defn next-child-path [store]
-  (child-path store next-childname))
+(defn next-child-path [loc-info]
+  (child-path loc-info next-childname))
 
 (defn read-edn-file [filename]
   (when filename
@@ -64,9 +60,9 @@
   (when data
     (spit filename (prn-str data))))
 
-(defn read-store [store]
-  (read-edn-file (last-child-path store)))
+(defn read-file [loc-info]
+  (read-edn-file (last-child-path loc-info)))
 
-(defn write-store! [store data]
-  (write-edn-file! (next-child-path store) data))
+(defn write-file! [loc-info data]
+  (write-edn-file! (next-child-path loc-info) data))
 
