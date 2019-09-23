@@ -15,6 +15,7 @@
   (->> (io/file base-dir)
     (.listFiles)
     (map #(.getName %))
+    (filter (partial re-matches #"\d+"))
     (sort)
     (last)))
 
