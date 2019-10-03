@@ -36,5 +36,11 @@ Write to disk.
     ;; Dump as an edn file in the directory.
     (fs/write-store! my-store)
 
+
+# Plugins
+
+Plugins may be added by implementing the `plugin-do-init` and `plugin-do-write` multimethods.
+For more information, refer to the `ashikasoft-filestore-plugin-git` project.
+
 # License
 MIT License. No warranty.
