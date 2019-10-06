@@ -10,9 +10,9 @@
 
 ;; FIXME filter out non-numerical filenames or names exceeding 8 digits
 (defn last-childname
-  "Get the current max name in the base directory"
-  [base-dir]
-  (->> (io/file base-dir)
+  "Get the current max name in the directory"
+  [dir]
+  (->> (io/file dir)
     (.listFiles)
     (map #(.getName %))
     (filter (partial re-matches #"\d+"))
@@ -25,10 +25,10 @@
 
 ;; FIXME this isnt thread safe -- after the prototype, move to a db
 (defn next-childname
-  "Generate the next name after the max name in the base directory, or a new name"
-  [base-dir]
+  "Generate the next name after the max name in the directory, or a new name"
+  [dir]
   (or
-    (some->> (last-childname base-dir)
+    (some->> (last-childname dir)
       (parse-name)
       (inc)
       (format-name))

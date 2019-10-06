@@ -25,12 +25,19 @@
          data (impl/read-file loc-info)]
      {:loc-info loc-info
       :plugins []
+      :plugin-data {}
       :data (atom (or data init-data))})))
-    
+
+(defn load-plugin! [store {plugin-type :plugin-type :as plugin}]
+  (let [store-with-plugin (-> store
+                              (update :plugins conj plugin-type)
+                              (assoc-in [:plugin-data plugin-type] plugin))]
+    (plugin-do-init! store-with-plugin plugin-type)))
+
 (defn init-plugins!
   "Add plugin information to the store and initialize the plugins. This may modify the store."
   [store plugins]
-  (reduce  plugin-do-init! store plugins))
+  (reduce load-plugin! store plugins))
 
 (defn write-store!
   "Write the store data to a file. Invoke the plugins' write methods on the store, if any."
