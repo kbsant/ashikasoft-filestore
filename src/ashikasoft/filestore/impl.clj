@@ -7,11 +7,11 @@
 ;; Implementation file - not meant for public consumption.
 
 (defn join-path [& elements]
-  (clojure.string/join java.io.File/separator elements))
+  (string/join java.io.File/separator elements))
 
 (defn remove-trailing-sep [path]
   (if (string/ends-with? path java.io.File/separator)
-    (substr path 0 (dec (len path)))
+    (subs path 0 (dec (.length path)))
     path))
 
 ;; FIXME filter out non-numerical filenames or names exceeding 8 digits
