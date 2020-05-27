@@ -1,12 +1,18 @@
 (ns ashikasoft.filestore.impl
   (:require
     [clojure.edn :as edn]
+    [clojure.string :as string]
     [clojure.java.io :as io]))
 
 ;; Implementation file - not meant for public consumption.
 
 (defn join-path [& elements]
   (clojure.string/join java.io.File/separator elements))
+
+(defn remove-trailing-sep [path]
+  (if (string/ends-with? path java.io.File/separator)
+    (substr path 0 (dec (len path)))
+    path))
 
 ;; FIXME filter out non-numerical filenames or names exceeding 8 digits
 (defn last-childname
@@ -44,9 +50,8 @@
      :path path}))
 
 (defn child-path [{path :path :as loc-info} child-fn]
-  (let [child-name (child-fn path)]
-    (when child-name
-      (join-path path child-name))))
+  (when-let [child-name (child-fn path)]
+    (join-path path child-name)))
 
 (defn last-child-path [loc-info]
   (child-path loc-info last-childname))

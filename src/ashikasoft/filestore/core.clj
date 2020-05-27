@@ -7,7 +7,20 @@
 ;; Bare-bones edn file store, meant for prototypes or small projects.
 ;; Does not include queuing or caching.
 
+;; Sample usage:
+;;
+#_(comment
+  (defn filestore-with-git [{:keys [name base-dir repo-url]}]
+    (let [store (init-store! base-dir name)
+          git-plugin (git-plugin/configure repo-url)]
+      (init-plugins! store [git-plugin])))
+
+  )
+
 ;; declare plugin multimethods
+(defmulti plugin-data :plugin-type)
+(defmethod plugin-data :default [plugin] plugin)
+
 (defmulti plugin-do-init! (fn [store plugin-type] plugin-type))
 (defmethod plugin-do-init! :default [store _] store)
 
