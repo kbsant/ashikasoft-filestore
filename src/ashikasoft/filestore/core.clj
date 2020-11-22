@@ -1,8 +1,6 @@
 (ns ashikasoft.filestore.core
   (:require
-    [ashikasoft.filestore.impl :as impl]
-    [clojure.edn :as edn]
-    [clojure.java.io :as io]))
+    [ashikasoft.filestore.impl :as impl]))
 
 ;; Bare-bones edn file store, meant for prototypes or small projects.
 ;; Does not include queuing or caching.
