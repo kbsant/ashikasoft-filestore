@@ -1,4 +1,4 @@
-(defproject ashikasoft/filestore "0.1.2"
+(defproject ashikasoft/filestore "0.1.3-SNAPSHOT"
   :description "A file store for prototypes or small projects"
   :url "https://github.com/kbsant/ashikasoft-filestore"
   :license {:name "MIT License"
