@@ -3,4 +3,4 @@
   :url "https://github.com/kbsant/ashikasoft-filestore"
   :license {:name "MIT License"
             :url "https://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.11.1"]])
+  :dependencies [[org.clojure/clojure "1.11.2"]])
